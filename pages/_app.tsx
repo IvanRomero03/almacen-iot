@@ -11,7 +11,7 @@ const App = (props: AppProps) => {
   return (
     <>
       <Head>
-        <title>Pruebas Mantine + Next12 ssr</title>
+        <title>Almacen IoT</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
