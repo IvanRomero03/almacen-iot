@@ -26,7 +26,9 @@ const Home = () => {
       {isLoading ? (
         <></>
       ) : (
-        data?.data?.map((item: any) => <PrestamoItem id={item.id} />)
+        data?.data?.map((item: any) => (
+          <PrestamoItem id={item.id} key={item.id} />
+        ))
       )}
       <Group position="left" mt="md" mb="xs">
         <Text>Prestamos inactivos: </Text>
@@ -38,7 +40,7 @@ const Home = () => {
         <></>
       ) : (
         inactivePrestamos?.data?.data?.map((item: any) => (
-          <PrestamoItem id={item.id} />
+          <PrestamoItem id={item.id} key={item.id} />
         ))
       )}
     </Layout>
