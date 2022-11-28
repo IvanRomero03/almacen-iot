@@ -18,7 +18,7 @@ const Home = () => {
       ) : (
         <Group position="center" mt="md" mb="xs">
           {data?.data?.map((item: any) => (
-            <RoboItem id={item.id} />
+            <RoboItem id={item.id} key={item.id} />
           ))}
         </Group>
       )}
