@@ -6,20 +6,20 @@ import client from "../client";
 import { Badge, Group, Text } from "@mantine/core";
 
 const Home = () => {
-  const { data, isLoading } = useQuery(["prestamos"], () =>
-    client.get("/Prestamo/getActivePrestamos")
+  const { data, isLoading } = useQuery(["prestamosUser"], () =>
+    client.post("/Prestamo/getUserPrestamos", { id: 1 })
   );
 
-  const inactivePrestamos = useQuery(["prestamosIn"], () =>
-    client.get("/Prestamo/getInactivePrestamos")
+  const inactivePrestamos = useQuery(["prestamosUserIn"], () =>
+    client.post("/Prestamo/getUserInactives", { id: 1 })
   );
 
   return (
     <Layout>
-      <h1>Prestamos</h1>
+      <h1>Mis Prestamos</h1>
       <Group position="left" mt="md" mb="xs">
         <Text>Prestamos activos: </Text>
-        <Badge color="cyan" variant="light">
+        <Badge color="red" variant="light">
           {data?.data?.length}
         </Badge>
       </Group>
