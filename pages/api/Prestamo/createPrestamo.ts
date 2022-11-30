@@ -100,6 +100,7 @@ export default async function handler(
         },
       },
     });
+    console.log(asd);
   });
 
   res.status(200).json(prestamo);
