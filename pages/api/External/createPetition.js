@@ -79,21 +79,20 @@ export default async function handler(req, res) {
     credencial: userCredential,
     celdas: celdasToUse,
   });
-  await socket.on("connect", async () => {
+  socket.on("connect", async () => {
     //socket.emit("mensaje", "Hola mundo");
-    socket
-      .emit("createPetition", {
-        credencial: userCredential,
-        celdas: celdasToUse,
-        prestamoInfo: {
-          userId,
-          itemId,
-          quantity,
-        },
-      })
-      .then(() => {
-        socket.close();
-        res.status(200).json();
-      });
+    socket.emit("createPetition", {
+      credencial: userCredential,
+      celdas: celdasToUse,
+      prestamoInfo: {
+        userId,
+        itemId,
+        quantity,
+      },
+    });
+    socket.on("petitionResponse", () => {
+      socket.close();
+    });
   });
+  res.status(200).json();
 }

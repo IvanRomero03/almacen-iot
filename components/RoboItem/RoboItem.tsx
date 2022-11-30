@@ -27,7 +27,7 @@ const RoboItem = ({ id }: { id: number }) => {
 
   const sumbitPeticion = async () => {
     setOpened(false);
-    await client.post("External/createPetition", {
+    client.post("External/createPetition", {
       userId: 1,
       itemId: id,
       quantity: value,

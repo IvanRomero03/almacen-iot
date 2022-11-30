@@ -30,10 +30,6 @@ export default async function handler(req, res) {
 
   if (!celdaWithItem) {
     // abrir la primera celda
-    await socket.on("connect", async () => {
-      await socket.emit("open", "1");
-      socket.close();
-    });
 
     // update celdaItem with Celda 1
     const idCeldaItem = await prisma.celdaItem.findFirst({
@@ -66,12 +62,14 @@ export default async function handler(req, res) {
         },
       });
     }
+    socket.on("connect", () => {
+      socket.emit("open", "1");
+      socket.on("openResponse", () => {
+        socket.close();
+      });
+    });
   } else {
     // abrir la celda con mayor existencia
-    await socket.on("connect", async () => {
-      await socket.emit("open", celdaWithItem.Celda.id);
-      socket.close();
-    });
 
     // update celdaItem with Celda = celdaWithItem.Celda.id
 
@@ -105,6 +103,12 @@ export default async function handler(req, res) {
         },
       });
     }
+    socket.on("connect", () => {
+      socket.emit("open", celdaWithItem.Celda.id);
+      socket.on("on", () => {
+        socket.close();
+      });
+    });
   }
 
   await prisma.prestamo.update({
