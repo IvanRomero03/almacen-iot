@@ -20,7 +20,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/External/createPetition.js"
+    "pages/api/External/createPetition.js",
+    "pages/api/External/devolverItem.js"
   ],
   "exclude": ["node_modules"]
 }
