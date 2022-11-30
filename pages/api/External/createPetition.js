@@ -79,9 +79,9 @@ export default async function handler(req, res) {
     credencial: userCredential,
     celdas: celdasToUse,
   });
-  socket.on("connect", () => {
+  await socket.on("connect", async () => {
     //socket.emit("mensaje", "Hola mundo");
-    socket.emit("createPetition", {
+    await socket.emit("createPetition", {
       credencial: userCredential,
       celdas: celdasToUse,
       prestamoInfo: {
