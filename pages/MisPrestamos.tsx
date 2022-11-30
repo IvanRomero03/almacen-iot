@@ -1,5 +1,6 @@
 import Layout from "../components/layout/Layout";
 import RoboItem from "../components/RoboItem/RoboItem";
+import PrestamoIndividual from "../components/Prestamos/PrestamoIndividual";
 import PrestamoItem from "../components/Prestamos/PrestamoItem";
 import { useQuery } from "@tanstack/react-query";
 import client from "../client";
@@ -27,7 +28,7 @@ const Home = () => {
         <></>
       ) : (
         data?.data?.map((item: any) => (
-          <PrestamoItem id={item.id} key={item.id} />
+          <PrestamoIndividual id={item.id} key={item.id} />
         ))
       )}
       <Group position="left" mt="md" mb="xs">

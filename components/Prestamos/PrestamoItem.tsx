@@ -16,7 +16,7 @@ const PrestamoItem = ({ id }: { id: number }) => {
           <Avatar
             src={
               "https://bfmvwivyerrefrhrlmxx.supabase.co/storage/v1/object/public/imagenes/Almacen/" +
-              id +
+              data?.data?.Item?.id +
               ".jpg"
             }
             alt={data?.data?.Item?.name}
