@@ -73,8 +73,8 @@ export default async function handler(req, res) {
     return res.status(401).json({ message: "Not enough items" });
   }
 
-  //const socket = io("ws://almacne-iot.us-east-1.elasticbeanstalk.com");
-  const socket = io("http://localhost:3000");
+  const socket = io("ws://almacne-iot.us-east-1.elasticbeanstalk.com");
+  //const socket = io("http://localhost:3000");
   console.log({
     credencial: userCredential,
     celdas: celdasToUse,
