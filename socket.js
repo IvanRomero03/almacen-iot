@@ -7,11 +7,17 @@ socket.on("connect", () => {
 });
 
 socket.on("open", (data) => {
-  console.log(data);
+  //console.log(data);
 });
 
 if (!global.socket) {
   global.socket = socket;
 }
+
+socket.on("disconnect", () => {
+  console.log("disconnected");
+  // reconnect automatically
+  socket.connect();
+});
 
 export default socket;
