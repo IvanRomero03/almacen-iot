@@ -9,7 +9,6 @@ export default async function handler(
   const { userId, itemId, cantidad } = req.body;
   if (!userId || !itemId || !cantidad) {
     res.status(400);
-    return;
   }
 
   const prestamo = await prisma.prestamo.create({
@@ -19,5 +18,6 @@ export default async function handler(
       Cantidad: cantidad,
     },
   });
+
   res.status(200).json(prestamo);
 }
