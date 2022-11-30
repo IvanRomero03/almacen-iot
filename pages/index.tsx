@@ -12,7 +12,6 @@ const Home = () => {
   return (
     <Layout>
       <h1>Inventario</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</p>
       {isLoading ? (
         <></>
       ) : (
