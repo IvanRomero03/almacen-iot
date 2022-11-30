@@ -81,17 +81,19 @@ export default async function handler(req, res) {
   });
   await socket.on("connect", async () => {
     //socket.emit("mensaje", "Hola mundo");
-    await socket.emit("createPetition", {
-      credencial: userCredential,
-      celdas: celdasToUse,
-      prestamoInfo: {
-        userId,
-        itemId,
-        quantity,
-      },
-    });
-    socket.close();
+    socket
+      .emit("createPetition", {
+        credencial: userCredential,
+        celdas: celdasToUse,
+        prestamoInfo: {
+          userId,
+          itemId,
+          quantity,
+        },
+      })
+      .then(() => {
+        socket.close();
+        res.status(200).json();
+      });
   });
-
-  res.status(200).json();
 }
