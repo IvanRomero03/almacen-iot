@@ -1,5 +1,5 @@
 import { prisma } from "../_db";
-import io from "socket.io-client";
+import socket from "../../../socket";
 
 export default async function handler(req, res) {
   const { itemId, quantity, idPrestamo } = req.body;
@@ -26,11 +26,9 @@ export default async function handler(req, res) {
     },
   });
 
-  const socket = io("ws://almacne-iot.us-east-1.elasticbeanstalk.com");
-
   if (!celdaWithItem) {
     // abrir la primera celda
-
+    socket.emit("open", "1");
     // update celdaItem with Celda 1
     const idCeldaItem = await prisma.celdaItem.findFirst({
       where: {
@@ -62,15 +60,9 @@ export default async function handler(req, res) {
         },
       });
     }
-    socket.on("connect", () => {
-      socket.emit("open", "1");
-      socket.on("openResponse", () => {
-        socket.close();
-      });
-    });
   } else {
     // abrir la celda con mayor existencia
-
+    //socket.emit("open", "2");
     // update celdaItem with Celda = celdaWithItem.Celda.id
 
     const idCeldaItem = await prisma.celdaItem.findFirst({
@@ -103,12 +95,7 @@ export default async function handler(req, res) {
         },
       });
     }
-    socket.on("connect", () => {
-      socket.emit("open", celdaWithItem.Celda.id);
-      socket.on("on", () => {
-        socket.close();
-      });
-    });
+    socket.emit("open", celdaWithItem.Celda.id || "2");
   }
 
   await prisma.prestamo.update({

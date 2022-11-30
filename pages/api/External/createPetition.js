@@ -1,5 +1,5 @@
 import { prisma } from "../_db";
-import io from "socket.io-client";
+import socket from "../../../socket";
 
 export default async function handler(req, res) {
   const { userId, itemId, quantity } = req.body;
@@ -73,26 +73,18 @@ export default async function handler(req, res) {
     return res.status(401).json({ message: "Not enough items" });
   }
 
-  const socket = io("ws://almacne-iot.us-east-1.elasticbeanstalk.com");
-  //const socket = io("http://localhost:3000");
   console.log({
     credencial: userCredential,
     celdas: celdasToUse,
   });
-  socket.on("connect", async () => {
-    //socket.emit("mensaje", "Hola mundo");
-    socket.emit("createPetition", {
-      credencial: userCredential,
-      celdas: celdasToUse,
-      prestamoInfo: {
-        userId,
-        itemId,
-        quantity,
-      },
-    });
-    socket.on("petitionResponse", () => {
-      socket.close();
-    });
+  socket.emit("createPetition", {
+    credencial: userCredential,
+    celdas: celdasToUse,
+    prestamoInfo: {
+      userId,
+      itemId,
+      quantity,
+    },
   });
   res.status(200).json();
 }
