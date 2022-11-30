@@ -71,24 +71,34 @@ export default async function handler(
     res.status(400);
   }
 
-  await prisma.celdaItem.updateMany({
-    where: {
-      itemId,
-      Celda: {
-        id: {
-          in: celdasToUpdate.map(
-            (celda: { celda: number; existencia: number }) => celda.celda
-          ),
+  const celdasUpdate = [] as any;
+
+  celdasWithItem.forEach(async (celda) => {
+    const id = await prisma.celdaItem.findFirst({
+      where: {
+        itemId: itemId,
+        celdaId: celda.Celda.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+    celdasUpdate.push({
+      id: id,
+      existencia: celda.existencia,
+    });
+  });
+  celdasUpdate.forEach(async (celda: any) => {
+    await prisma.celdaItem.update({
+      where: {
+        id: celda.id,
+      },
+      data: {
+        existencia: {
+          decrement: celda.existencia,
         },
       },
-    },
-    data: {
-      existencia: {
-        decrement: celdasToUpdate.map(
-          (celda: { celda: number; existencia: number }) => celda.existencia
-        ),
-      },
-    },
+    });
   });
 
   res.status(200).json(prestamo);
