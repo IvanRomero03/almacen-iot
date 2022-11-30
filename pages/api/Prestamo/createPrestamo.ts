@@ -89,7 +89,7 @@ export default async function handler(
     });
   });
   celdasUpdate.forEach(async (celda: any) => {
-    await prisma.celdaItem.update({
+    const asd = await prisma.celdaItem.update({
       where: {
         id: celda.id,
       },
@@ -99,6 +99,7 @@ export default async function handler(
         },
       },
     });
+    console.log(asd);
   });
 
   res.status(200).json(prestamo);
