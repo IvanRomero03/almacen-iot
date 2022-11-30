@@ -6,12 +6,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Prestamo>
 ) {
-  console.log("prestamo");
   const { userId, itemId, cantidad } = req.body;
   if (!userId || !itemId || !cantidad) {
     res.status(400);
   }
-  console.log("prestamo");
 
   const prestamo = await prisma.prestamo.create({
     data: {
@@ -20,7 +18,6 @@ export default async function handler(
       Cantidad: cantidad,
     },
   });
-  console.log("prestamo");
   const celdasWithItem = await prisma.celdaItem.findMany({
     where: {
       itemId,
@@ -40,7 +37,6 @@ export default async function handler(
       existencia: "desc",
     },
   });
-  console.log("prestamo");
 
   let cantidadRestante = cantidad;
   const celdasToUpdate = [] as any;
@@ -62,7 +58,6 @@ export default async function handler(
       }
     }
   });
-  console.log("prestamo");
   if (cantidadRestante > 0) {
     res.status(400);
   }
@@ -73,11 +68,16 @@ export default async function handler(
 
   const celdasUpdate = [] as any;
 
-  celdasWithItem.forEach(async (celda) => {
+  for (let i = 0; i < celdasToUpdate.length; i++) {
+    const celda = celdasToUpdate[i];
     const id = await prisma.celdaItem.findFirst({
       where: {
-        itemId: itemId,
-        celdaId: celda.Celda.id,
+        Item: {
+          id: itemId,
+        },
+        Celda: {
+          id: celda.celda,
+        },
       },
       select: {
         id: true,
@@ -87,11 +87,12 @@ export default async function handler(
       id: id,
       existencia: celda.existencia,
     });
-  });
+  }
+
   celdasUpdate.forEach(async (celda: any) => {
     const asd = await prisma.celdaItem.update({
       where: {
-        id: celda.id,
+        id: celda.id.id,
       },
       data: {
         existencia: {
@@ -99,7 +100,6 @@ export default async function handler(
         },
       },
     });
-    console.log(asd);
   });
 
   res.status(200).json(prestamo);
